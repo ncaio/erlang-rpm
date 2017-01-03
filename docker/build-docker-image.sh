@@ -1,19 +1,19 @@
 #!/bin/sh
 #
-#	
 #
-_docker_file="Dockerfile"
-_docker_temp="Dockerfile.template"
+#
+_dockerfile="Dockerfile"
+_dockertemp="Dockerfile.template"
 _parameter1="$1"
 _parameter2="$2"
-_docker_dir="docker-centos-$_parameter1"
+_dockerdir="docker-centos-$_parameter1"
 #
 #
 #
 if [ -z $_parameter1 ]
 then
 	echo "
-Ops: parameters error
+Opps: parameters error
 first: version, ex: 6 or 7
 second: --no-cache [optional]
 -----------------------------------------
@@ -27,30 +27,30 @@ fi
 #
 #
 #
-if [ -e "$_docker_file" ]
+if [ -e Dockerfile ]
 then
-	rm -f "$_docker_file"
+	rm -f Dockerfile
 fi
 #
 #
 #
-if [ -e "$_docker_dir" ]
+if [ -e "$_dockerdir" ]
 then
-	rm -rf "$_docker_dir"
-	mkdir "$_docker_dir"
+	rm -rf "$_dockerdir"
+	mkdir "$_dockerdir"
 fi
 #
 #
 #
-if [ -e "$_docker_temp" ]
+if [ -e "$_dockertemp" ]
 then
-	cp "$_docker_temp" "$_docker_dir"/"$_docker_file"
-	sed -i 's/{centosfrom}/'$1'/g' "$_docker_dir"/"$_docker_file"
+	cp Dockerfile.template  "$_dockerdir"/Dockerfile
+	sed -i 's/{centosfrom}/'$1'/g' "$_dockerdir"/Dockerfile
 	if [ -z $_parameter2 ]
 	then
-		sudo docker build -t="erlang-rpm-build-""$_parameter1" "$_docker_dir"
+		sudo docker build -t="erlang-rpm-build-""$_parameter1" "$_dockerdir"
 	else
-		sudo docker build "$_parameter2" -t="erlang-rpm-build-""$_parameter1" "$_docker_dir"
+		sudo docker build "$_parameter2" -t="erlang-rpm-build-""$_parameter1" "$_dockerdir"
 	fi
 fi
 #
